@@ -21,7 +21,7 @@ public class TextUtils {
 	 * LUT for the first byte in a UTF8 character to determine the total number
 	 * of bytes in the character
 	 */
-	static final int[] UTF8_BYTE_LENGTH = new int[256];
+	private static final int[] UTF8_BYTE_LENGTH = new int[256];
 
 	static {
 		// Configure UTF8 byte length array
@@ -94,7 +94,7 @@ public class TextUtils {
 
 		if (start >= CHAR_OFFSETS.size() || start < 0) {
 			throw new StringIndexOutOfBoundsException(start);
-		} else if (end > CHAR_OFFSETS.size()) {
+		} else if (end >= CHAR_OFFSETS.size()) {
 			throw new StringIndexOutOfBoundsException(end);
 		} else if (end <= start) {
 			throw new StringIndexOutOfBoundsException(String.format("end index <= start index: %d <= %d", end, start));
@@ -149,7 +149,7 @@ public class TextUtils {
 	 * @param offsets
 	 */
 	public static void findUTF8CharOffsets(Text src, List<Integer> offsets) {
-		findUTF8CharOffsets(src, offsets, Integer.MAX_VALUE);
+		findUTF8CharOffsets(src, offsets, src.getLength());
 	}
 
 	/**
@@ -243,7 +243,11 @@ public class TextUtils {
 	 *            Character index
 	 * @return Point code of ascii character
 	 */
-	public static int asciiCharAt(Text text, int index) {
+	public static int asciiCodePointAt(Text text, int index) {
+		if (index < 0 || index >= text.getLength()) {
+			throw new StringIndexOutOfBoundsException(index);
+		}
+
 		return text.getBytes()[index];
 	}
 
@@ -256,9 +260,9 @@ public class TextUtils {
 	 *            Character index to query
 	 * @return point code of UTF8 character at requested index
 	 */
-	public static int utf8CharAt(Text text, int index) {
+	public static int utf8CodePointAt(Text text, int index) {
 		findUTF8CharOffsets(text, CHAR_OFFSETS);
-		return utf8CharAt(text, CHAR_OFFSETS, index);
+		return utf8CodePointAt(text, CHAR_OFFSETS, index);
 	}
 
 	/**
@@ -272,7 +276,7 @@ public class TextUtils {
 	 *            Character index to query
 	 * @return point code of UTF8 character at requested index
 	 */
-	public static int utf8CharAt(Text text, List<Integer> charOffsets, int index) {
+	public static int utf8CodePointAt(Text text, List<Integer> charOffsets, int index) {
 		if (index >= charOffsets.size()) {
 			throw new StringIndexOutOfBoundsException(index);
 		}
