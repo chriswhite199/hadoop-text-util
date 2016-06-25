@@ -344,4 +344,74 @@ public class TextUtils {
 
 		return dst;
 	}
+
+	/**
+	 * Append the source Text to the destination text
+	 * 
+	 * @param src
+	 *            Source to append
+	 * @param dst
+	 *            Destination to append to
+	 * @return Destination text, for api call chaining
+	 */
+	public static Text append(Text src, Text dst) {
+		dst.append(src.getBytes(), 0, src.getLength());
+		return dst;
+	}
+
+	/**
+	 * Tests whether the src Text starts with the same bytes as the prefix Text
+	 * 
+	 * @param src
+	 *            Source to test
+	 * @param prefix
+	 *            Prefix to test src for
+	 * @return True if the src starts with the same bytes as prefix, false
+	 *         otherwise
+	 */
+	public static boolean startsWith(Text src, Text prefix) {
+		return startsWith(src, prefix, 0);
+	}
+
+	/**
+	 * Tests if the substring of this Text beginning at the specified index
+	 * starts with the specified prefix.
+	 * 
+	 * @param src
+	 *            Source to test
+	 * @param prefix
+	 *            Prefix to test src for
+	 * @param startIdx
+	 *            where to begin looking in src text
+	 * @return
+	 */
+	public static boolean startsWith(Text src, Text prefix, int startIdx) {
+		if (startIdx < 0) {
+			return false;
+		} else if (src.getLength() >= startIdx + prefix.getLength()) {
+			for (int idx = startIdx; idx < prefix.getLength(); idx++) {
+				if (src.getBytes()[idx] != prefix.getBytes()[idx]) {
+					return false;
+				}
+			}
+
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Tests whether the src Text ends with the same bytes as the suffix Text
+	 * 
+	 * @param src
+	 *            Source to test
+	 * @param suffix
+	 *            Suffix to test src for
+	 * @return True if the src ends with the same bytes as suffix, false
+	 *         otherwise
+	 */
+	public static boolean endsWith(Text src, Text suffix) {
+		return startsWith(src, suffix, src.getLength() - suffix.getLength());
+	}
 }
