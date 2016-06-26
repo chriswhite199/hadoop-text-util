@@ -389,8 +389,9 @@ public class TextUtils {
 		if (startIdx < 0) {
 			return false;
 		} else if (src.getLength() >= startIdx + prefix.getLength()) {
-			for (int idx = startIdx; idx < prefix.getLength(); idx++) {
-				if (src.getBytes()[idx] != prefix.getBytes()[idx]) {
+			int preIdx = 0;
+			for (int idx = startIdx; idx < startIdx + prefix.getLength(); idx++) {
+				if (src.getBytes()[idx] != prefix.getBytes()[preIdx++]) {
 					return false;
 				}
 			}

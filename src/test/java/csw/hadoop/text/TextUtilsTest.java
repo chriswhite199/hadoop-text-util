@@ -160,34 +160,40 @@ public class TextUtilsTest {
 			}
 		}
 	}
-	
+
 	@Test
 	public void testStartsWith() {
 		// no length prefix
 		Assert.assertTrue(TextUtils.startsWith(new Text("a"), new Text("")));
-		
+
 		// same length
 		Assert.assertTrue(TextUtils.startsWith(new Text("a"), new Text("a")));
 		Assert.assertFalse(TextUtils.startsWith(new Text("a"), new Text("b")));
-		
+
 		// prefix larger than src
 		Assert.assertFalse(TextUtils.startsWith(new Text("a"), new Text("ab")));
-		
+
 		// substring
 		Assert.assertTrue(TextUtils.startsWith(new Text("abc"), new Text("ab")));
 		Assert.assertFalse(TextUtils.startsWith(new Text("abc"), new Text("bc")));
+		Assert.assertFalse(TextUtils.startsWith(new Text("abc"), new Text("ac")));
 	}
-	
+
 	@Test
 	public void testEndsWith() {
 		// no length suffix
 		Assert.assertTrue(TextUtils.endsWith(new Text("a"), new Text("")));
-		
+
 		// same length
 		Assert.assertTrue(TextUtils.endsWith(new Text("a"), new Text("a")));
 		Assert.assertFalse(TextUtils.endsWith(new Text("a"), new Text("b")));
-		
+
 		// suffix larger than src
 		Assert.assertFalse(TextUtils.endsWith(new Text("a"), new Text("ab")));
+
+		// substring
+		Assert.assertFalse(TextUtils.endsWith(new Text("abc"), new Text("ab")));
+		Assert.assertTrue(TextUtils.endsWith(new Text("abc"), new Text("bc")));
+		Assert.assertFalse(TextUtils.endsWith(new Text("abc"), new Text("bd")));
 	}
 }
